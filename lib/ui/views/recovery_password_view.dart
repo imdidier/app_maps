@@ -19,31 +19,29 @@ class RecoveryPasswordView extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
       ),
-      body: const SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              LogoWidget(),
-              CustomTextInput(
-                obscureText: true,
-                hintText: 'Nueva contraseña',
-                label: 'Nueva contraseña',
-              ),
-              SizedBox(height: 20),
-              CustomTextInput(
-                obscureText: true,
-                hintText: 'Repita contraseña',
-                label: 'Repetir contraseña',
-              ),
-              Expanded(child: SizedBox()),
-              CustomButton(
-                title: 'Cambiar contraseña',
-                urlRuta: '/',
-              )
-            ],
-          ),
+      body: const Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            LogoWidget(),
+            CustomTextInput(
+              obscureText: true,
+              hintText: 'Nueva contraseña',
+              label: 'Nueva contraseña',
+            ),
+            SizedBox(height: 20),
+            CustomTextInput(
+              obscureText: true,
+              hintText: 'Repita contraseña',
+              label: 'Repetir contraseña',
+            ),
+            Expanded(child: SizedBox()),
+            CustomButton(
+              title: 'Cambiar contraseña',
+              urlRuta: '/',
+            )
+          ],
         ),
       ),
     );
