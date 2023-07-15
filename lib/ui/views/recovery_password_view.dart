@@ -40,7 +40,7 @@ class RecoveryPasswordView extends StatelessWidget {
               Expanded(child: SizedBox()),
               CustomButton(
                 title: 'Cambiar contraseña',
-                urlRuta: '/home',
+                urlRuta: '/',
               )
             ],
           ),
