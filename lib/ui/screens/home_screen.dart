@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
@@ -13,8 +14,14 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      drawer: Drawer(
+      appBar: AppBar(
+        title: const CupertinoSearchTextField(
+          autocorrect: true,
+          placeholder: 'Buscar lugares...',
+          prefixIcon: Icon(Icons.search),
+        ),
+      ),
+      endDrawer: Drawer(
         width: MediaQuery.of(context).size.width * 0.5,
         child: const SafeArea(
           child: Padding(
@@ -152,6 +159,7 @@ class HomeView extends StatelessWidget {
         minZoom: 5,
         maxZoom: 25,
         zoom: 18,
+        rotationWinGestures: MultiFingerGesture.none,
       ),
       nonRotatedChildren: [
         TileLayer(
