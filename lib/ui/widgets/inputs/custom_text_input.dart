@@ -1,4 +1,10 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+
+enum orientationAnimated {
+  left,
+  right,
+}
 
 class CustomTextInput extends StatelessWidget {
   final String? label;
@@ -7,6 +13,7 @@ class CustomTextInput extends StatelessWidget {
   final bool obscureText;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
+  final Enum orientationAnimated;
 
   const CustomTextInput({
     Key? key,
@@ -16,6 +23,7 @@ class CustomTextInput extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.hintText,
+    required this.orientationAnimated,
   }) : super(key: key);
 
   @override
@@ -24,6 +32,60 @@ class CustomTextInput extends StatelessWidget {
     final border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(25),
     );
+
+    return orientationAnimated.name == 'left'
+        ? FadeInLeftBig(
+            duration: const Duration(milliseconds: 1500),
+            child: _FromField(
+              onChanged: onChanged,
+              validator: validator,
+              obscureText: obscureText,
+              border: border,
+              colors: colors,
+              label: label,
+              hintText: hintText,
+              errorMessage: errorMessage,
+            ),
+          )
+        : FadeInRightBig(
+            duration: const Duration(milliseconds: 1500),
+            child: _FromField(
+              onChanged: onChanged,
+              validator: validator,
+              obscureText: obscureText,
+              border: border,
+              colors: colors,
+              label: label,
+              hintText: hintText,
+              errorMessage: errorMessage,
+            ),
+          );
+  }
+}
+
+class _FromField extends StatelessWidget {
+  const _FromField({
+    required this.onChanged,
+    required this.validator,
+    required this.obscureText,
+    required this.border,
+    required this.colors,
+    required this.label,
+    required this.hintText,
+    required this.errorMessage,
+  });
+
+  final Function(String p1)? onChanged;
+  final String? Function(String? p1)? validator;
+  final bool obscureText;
+  final OutlineInputBorder border;
+  final ColorScheme colors;
+  final String? label;
+  final String? hintText;
+  final String? errorMessage;
+
+  @override
+  Widget build(BuildContext context) {
     return TextFormField(
       onChanged: onChanged,
       validator: validator,

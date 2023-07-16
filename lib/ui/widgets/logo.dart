@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 class LogoWidget extends StatelessWidget {
@@ -5,11 +6,14 @@ class LogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Image.asset('assets/image.png'),
+    return JelloIn(
+      duration: const Duration(milliseconds: 1200),
+      child: SizedBox(
+        width: 270,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image.asset('assets/image.png'),
+        ),
       ),
     );
   }

@@ -254,10 +254,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             markers: [
               AnimatedMarker(
                 point: myPosition,
-                builder: (context, __) => Icon(
-                  Icons.person_pin,
-                  color: colors.primary,
-                  size: 30,
+                builder: (context, __) => FadeInRight(
+                  child: Icon(
+                    Icons.person_pin,
+                    color: colors.primary,
+                    size: 40,
+                  ),
                 ),
               ),
             ],

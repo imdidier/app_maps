@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,11 +14,9 @@ class SingInView extends StatelessWidget {
         title: const Text('Inicio sesión'),
         centerTitle: true,
       ),
-      body: const SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: _Form(),
-        ),
+      body: const Padding(
+        padding: EdgeInsets.all(10.0),
+        child: _Form(),
       ),
     );
   }
@@ -34,40 +33,51 @@ class _Form extends StatelessWidget {
           const LogoWidget(),
           const SizedBox(height: 15),
           const CustomTextInput(
+            orientationAnimated: orientationAnimated.left,
             obscureText: false,
             label: 'Correo',
             hintText: 'Ingrese email',
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
           const CustomTextInput(
+            orientationAnimated: orientationAnimated.right,
             obscureText: true,
             label: 'Contraseña',
             hintText: 'Ingrese contraseña',
           ),
-          TextButton(
-            onPressed: () {
-              context.go('/recovery-password');
-            },
-            child: const Text(
-              '¿Olvidaste tu contraseña? Cambiar contraseña',
-              style: TextStyle(color: Colors.blueAccent),
+          FadeInLeftBig(
+            duration: const Duration(milliseconds: 1500),
+            child: TextButton(
+              onPressed: () {
+                context.go('/recovery-password');
+              },
+              child: const Text(
+                '¿Olvidaste tu contraseña? Cambiar contraseña',
+                style: TextStyle(color: Colors.blueAccent),
+              ),
             ),
           ),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _ButtonTypeSingIn('assets/google.png'),
-              SizedBox(width: 20),
-              _ButtonTypeSingIn('assets/facebook.png'),
-            ],
+          FadeInRightBig(
+            duration: const Duration(milliseconds: 1500),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _ButtonTypeSingIn('assets/google.png'),
+                // SizedBox(width: 20),
+                // _ButtonTypeSingIn('assets/facebook.png'),
+              ],
+            ),
           ),
-          TextButton(
-            onPressed: () {
-              context.go('/register');
-            },
-            child: const Text(
-              '¿Aún no tienes cuenta? ¡Registrate!',
-              style: TextStyle(color: Colors.blueAccent),
+          FadeInLeftBig(
+            duration: const Duration(milliseconds: 1500),
+            child: TextButton(
+              onPressed: () {
+                context.go('/register');
+              },
+              child: const Text(
+                '¿Aún no tienes cuenta? ¡Registrate!',
+                style: TextStyle(color: Colors.blueAccent),
+              ),
             ),
           ),
           const Expanded(child: SizedBox()),

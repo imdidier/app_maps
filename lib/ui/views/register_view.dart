@@ -26,24 +26,28 @@ class RegisterView extends StatelessWidget {
           children: [
             LogoWidget(),
             CustomTextInput(
+              orientationAnimated: orientationAnimated.left,
               obscureText: false,
               hintText: 'Ingrese nombre',
               label: 'Nombres',
             ),
             SizedBox(height: 10),
             CustomTextInput(
+              orientationAnimated: orientationAnimated.right,
               obscureText: false,
               hintText: 'Ingrese apellidos',
               label: 'Apellidos',
             ),
             SizedBox(height: 10),
             CustomTextInput(
+              orientationAnimated: orientationAnimated.left,
               obscureText: false,
               hintText: 'Ingrese correo electrónico',
               label: 'Email',
             ),
             SizedBox(height: 10),
             CustomTextInput(
+              orientationAnimated: orientationAnimated.right,
               obscureText: true,
               hintText: 'Nueva contraseña',
               label: 'Contraseña',
