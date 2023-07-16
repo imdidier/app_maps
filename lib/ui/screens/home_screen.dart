@@ -1,16 +1,15 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:animate_do/animate_do.dart';
-import 'package:app_maps_2/ui/providers/map_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/constants/envrioment.dart';
+import '../providers/providers.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -192,20 +191,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
-  late MapController mapController;
-  late AnimatedMapController mapControllerAnimation;
-  @override
-  void didChangeDependencies() {
-    mapController = MapController();
-    mapControllerAnimation = AnimatedMapController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-      mapController: mapController,
-    );
-    super.didChangeDependencies();
-  }
-
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -217,22 +202,22 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             : widget.mapProvider.myPosition!;
 
     return FlutterMap(
-      mapController: mapControllerAnimation.mapController,
+      // mapController: mapControllerAnimation.mapController,
       options: MapOptions(
         center: myPosition,
         minZoom: 5,
         maxZoom: 25,
         zoom: 18,
         rotationWinGestures: MultiFingerGesture.none,
-        onMapReady: () {
-          mapControllerAnimation.mapController.mapEventStream.listen(
-            (evt) {
-              myPosition = evt.center;
-              setState(() {});
-            },
-          );
-          // And any other `MapController` dependent non-movement methods
-        },
+        // onMapReady: () {
+        //   mapControllerAnimation.mapController.mapEventStream.listen(
+        //     (evt) {
+        //       myPosition = evt.center;
+        //       setState(() {});
+        //     },
+        //   );
+        //   // And any other `MapController` dependent non-movement methods
+        // },
         // onPositionChanged: (newPosition, value) {
         //   if (newPosition.center != myPosition) {
         //     myPosition = newPosition.center!;
@@ -250,11 +235,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         ),
         if (widget.mapProvider.myPosition != null ||
             widget.mapProvider.placePosition != null)
-          AnimatedMarkerLayer(
+          MarkerLayer(
             markers: [
-              AnimatedMarker(
+              Marker(
                 point: myPosition,
-                builder: (context, __) => FadeInRight(
+                builder: (context) => FadeInRight(
                   child: Icon(
                     Icons.person_pin,
                     color: colors.primary,

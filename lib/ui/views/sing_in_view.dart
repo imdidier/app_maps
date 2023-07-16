@@ -33,14 +33,14 @@ class _Form extends StatelessWidget {
           const LogoWidget(),
           const SizedBox(height: 15),
           const CustomTextInput(
-            orientationAnimated: orientationAnimated.left,
+            orientationAnimated: OrientationAnimated.left,
             obscureText: false,
             label: 'Correo',
             hintText: 'Ingrese email',
           ),
           const SizedBox(height: 10),
           const CustomTextInput(
-            orientationAnimated: orientationAnimated.right,
+            orientationAnimated: OrientationAnimated.right,
             obscureText: true,
             label: 'Contraseña',
             hintText: 'Ingrese contraseña',
