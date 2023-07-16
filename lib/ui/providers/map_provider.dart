@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 class MapProvider extends ChangeNotifier {
   LatLng? myPosition;
   LatLng? placePosition;
+  bool isSearchDirection = false;
 
   Future<Position> determinePosition() async {
     LocationPermission permission;
@@ -21,6 +22,13 @@ class MapProvider extends ChangeNotifier {
   Future<void> getCurrentPosition() async {
     Position position = await determinePosition();
     myPosition = LatLng(position.latitude, position.longitude);
+    isSearchDirection = false;
+    notifyListeners();
+  }
+
+  Future<void> goNewPosition(String query) async {
+    placePosition = const LatLng(10.2299682, -75.4304379);
+    isSearchDirection = true;
     notifyListeners();
   }
 }

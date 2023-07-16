@@ -1,9 +1,11 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:animate_do/animate_do.dart';
 import 'package:app_maps_2/ui/providers/map_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
@@ -19,20 +21,30 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late MapProvider mapProvider;
+  bool? isSearchDirection;
   @override
   void didChangeDependencies() {
     mapProvider = Provider.of<MapProvider>(context);
+    isSearchDirection = mapProvider.isSearchDirection;
     super.didChangeDependencies();
   }
 
+  TextEditingController searchPlaceController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const CupertinoSearchTextField(
+        title: CupertinoSearchTextField(
           autocorrect: true,
           placeholder: 'Buscar lugares...',
-          prefixIcon: Icon(Icons.search),
+          prefixIcon: const Icon(Icons.search),
+          suffixIcon: const Icon(Icons.cancel_outlined),
+          controller: searchPlaceController,
+          onChanged: (String value) {
+            searchPlaceController.text = value;
+            mapProvider.goNewPosition(searchPlaceController.text);
+            isSearchDirection = true;
+          },
         ),
       ),
       endDrawer: Drawer(
@@ -78,12 +90,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: HomeView(mapProvider: mapProvider),
+      body: HomeView(
+        mapProvider: mapProvider,
+        isSearchDirection: isSearchDirection!,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           mapProvider.getCurrentPosition();
         },
-        child: const Icon(Icons.location_on_outlined),
+        child: FadeIn(child: const Icon(Icons.location_on_outlined)),
       ),
     );
   }
@@ -149,7 +164,7 @@ class _ExitButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Salir',
+            'Cerrar sesión',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -163,26 +178,66 @@ class _ExitButton extends StatelessWidget {
   }
 }
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   final MapProvider mapProvider;
+  final bool isSearchDirection;
   const HomeView({
     super.key,
     required this.mapProvider,
+    required this.isSearchDirection,
   });
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
+  late MapController mapController;
+  late AnimatedMapController mapControllerAnimation;
+  @override
+  void didChangeDependencies() {
+    mapController = MapController();
+    mapControllerAnimation = AnimatedMapController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+      mapController: mapController,
+    );
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    LatLng myPosition =
-        mapProvider.myPosition ?? const LatLng(10.4093098, -75.4601968);
+    LatLng myPosition = widget.mapProvider.myPosition == null
+        ? const LatLng(10.4093098, -75.4601968)
+        : widget.isSearchDirection
+            ? widget.mapProvider.placePosition!
+            : widget.mapProvider.myPosition!;
 
     return FlutterMap(
+      mapController: mapControllerAnimation.mapController,
       options: MapOptions(
         center: myPosition,
         minZoom: 5,
         maxZoom: 25,
         zoom: 18,
         rotationWinGestures: MultiFingerGesture.none,
+        onMapReady: () {
+          mapControllerAnimation.mapController.mapEventStream.listen(
+            (evt) {
+              myPosition = evt.center;
+              setState(() {});
+            },
+          );
+          // And any other `MapController` dependent non-movement methods
+        },
+        // onPositionChanged: (newPosition, value) {
+        //   if (newPosition.center != myPosition) {
+        //     myPosition = newPosition.center!;
+        //   }
+        // },
       ),
       nonRotatedChildren: [
         TileLayer(
@@ -193,12 +248,13 @@ class HomeView extends StatelessWidget {
             'id': 'imdidierjunco/cljn6091a00ls01qpddxn27vk',
           },
         ),
-        if (mapProvider.myPosition != null)
-          MarkerLayer(
+        if (widget.mapProvider.myPosition != null ||
+            widget.mapProvider.placePosition != null)
+          AnimatedMarkerLayer(
             markers: [
-              Marker(
+              AnimatedMarker(
                 point: myPosition,
-                builder: (context) => Icon(
+                builder: (context, __) => Icon(
                   Icons.person_pin,
                   color: colors.primary,
                   size: 30,
