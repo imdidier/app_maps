@@ -1,15 +1,29 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:app_maps_2/ui/providers/map_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:provider/provider.dart';
 
 import '../../config/constants/envrioment.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late MapProvider mapProvider;
+  @override
+  void didChangeDependencies() {
+    mapProvider = Provider.of<MapProvider>(context);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +78,11 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: HomeView(),
+      body: HomeView(mapProvider: mapProvider),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          mapProvider.getCurrentPosition();
+        },
         child: const Icon(Icons.location_on_outlined),
       ),
     );
@@ -148,11 +164,18 @@ class _ExitButton extends StatelessWidget {
 }
 
 class HomeView extends StatelessWidget {
-  LatLng myPosition = const LatLng(10.4093098, -75.4601968);
-  HomeView({super.key});
-
+  final MapProvider mapProvider;
+  const HomeView({
+    super.key,
+    required this.mapProvider,
+  });
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    LatLng myPosition =
+        mapProvider.myPosition ?? const LatLng(10.4093098, -75.4601968);
+
     return FlutterMap(
       options: MapOptions(
         center: myPosition,
@@ -170,18 +193,19 @@ class HomeView extends StatelessWidget {
             'id': 'imdidierjunco/cljn6091a00ls01qpddxn27vk',
           },
         ),
-        MarkerLayer(
-          markers: [
-            Marker(
-              point: myPosition,
-              builder: (context) => const Icon(
-                Icons.location_on_outlined,
-                color: Colors.purpleAccent,
-                size: 30,
+        if (mapProvider.myPosition != null)
+          MarkerLayer(
+            markers: [
+              Marker(
+                point: myPosition,
+                builder: (context) => Icon(
+                  Icons.person_pin,
+                  color: colors.primary,
+                  size: 30,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
       ],
     );
   }
