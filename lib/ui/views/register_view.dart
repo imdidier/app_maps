@@ -92,30 +92,32 @@ class _RegisterButton extends StatelessWidget {
     SingInProvider singInProvider = context.watch<SingInProvider>();
 
     return GestureDetector(
-      onTap: () async {
-        registerProvider.onSubmit();
-        bool resp = await userProvider.createUser(
-          newUser: {
-            'names': registerProvider.names.value,
-            'last_names': registerProvider.lastNames.value,
-            'email': registerProvider.email.value,
-          },
-        );
-        if (resp) {
-          await singInProvider.createUserWithEmailAndPassword(
-            email: registerProvider.email.value.trim(),
-            password: registerProvider.password.value.trim(),
-          );
-          context.go('/home');
-        }
-      },
+      onTap: !singInProvider.isValid
+          ? null
+          : () async {
+              registerProvider.onSubmit();
+              bool resp = await userProvider.createUser(
+                newUser: {
+                  'names': registerProvider.names.value,
+                  'last_names': registerProvider.lastNames.value,
+                  'email': registerProvider.email.value,
+                },
+              );
+              if (resp) {
+                await singInProvider.createUserWithEmailAndPassword(
+                  email: registerProvider.email.value.trim(),
+                  password: registerProvider.password.value.trim(),
+                );
+                context.go('/home');
+              }
+            },
       child: ElasticInRight(
         duration: const Duration(milliseconds: 1500),
         child: Container(
           height: 45,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: colors.primary,
+            color: !singInProvider.isValid ? Colors.grey : colors.primary,
             borderRadius: BorderRadius.circular(20),
           ),
           child: const Center(

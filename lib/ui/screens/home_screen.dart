@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
@@ -157,8 +157,10 @@ class _ExitButton extends StatelessWidget {
   const _ExitButton();
   @override
   Widget build(BuildContext context) {
+    SingInProvider singInProvider = context.watch<SingInProvider>();
     return TextButton(
-      onPressed: () {
+      onPressed: () async {
+        await singInProvider.singOut();
         context.go('/');
       },
       child: const Row(
