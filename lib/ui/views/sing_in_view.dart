@@ -30,7 +30,9 @@ class _Form extends StatelessWidget {
     return Form(
       child: Column(
         children: [
-          const LogoWidget(),
+          const LogoWidget(
+            type: 'sing_in',
+          ),
           const SizedBox(height: 15),
           const CustomTextInput(
             orientationAnimated: OrientationAnimated.left,
@@ -98,7 +100,7 @@ class _ButtonTypeSingIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 40,
+      width: 30,
       child: Image.asset(imgaeUrl),
     );
   }

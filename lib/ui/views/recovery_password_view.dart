@@ -24,7 +24,9 @@ class RecoveryPasswordView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LogoWidget(),
+            LogoWidget(
+              type: 'recovery_password',
+            ),
             CustomTextInput(
               orientationAnimated: OrientationAnimated.left,
               obscureText: true,

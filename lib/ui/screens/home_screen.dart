@@ -158,7 +158,9 @@ class _ExitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => context.go('/'),
+      onPressed: () {
+        context.go('/');
+      },
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

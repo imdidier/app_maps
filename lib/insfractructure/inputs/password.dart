@@ -13,8 +13,9 @@ class Password extends FormzInput<String, PasswordError> {
   String? get errorMessage {
     if (isValid || isPure) return null;
     if (displayError == PasswordError.empty) return 'El campo es requerido';
-    if (displayError == PasswordError.length)
+    if (displayError == PasswordError.length) {
       return 'La contraseña debe tener mínimo 6 caracteres';
+    }
     return null;
   }
 

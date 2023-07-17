@@ -18,6 +18,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => MapProvider()),
         ChangeNotifierProvider(create: (_) => SingInProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => RegisterProvider()),
       ],
       child: const MyApp(),
     ),

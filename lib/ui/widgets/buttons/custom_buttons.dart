@@ -1,10 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:animate_do/animate_do.dart';
-import 'package:app_maps_2/ui/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 class CustomButton extends StatelessWidget {
   final String title;
@@ -20,28 +18,9 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    UserProvider userProvider = context.watch<UserProvider>();
-    SingInProvider singInProvider = context.watch<SingInProvider>();
 
     return GestureDetector(
       onTap: () async {
-        if (title == 'Crear usuario') {
-          bool resp = await userProvider.createUser(
-            newUser: {
-              'names': data!['names'],
-              'last_names': data!['last_names'],
-              'email': data!['email'],
-            },
-          );
-          if (resp) {
-            await singInProvider.createUserWithEmailAndPassword(
-              email: data!['email'],
-              password: data!['password'],
-            );
-            context.go(urlRuta);
-            return;
-          }
-        }
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: SizedBox(
