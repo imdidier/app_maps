@@ -48,7 +48,7 @@ class SingInProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> createUserWithEmailAndPassword({
+  Future<String> createUserWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -57,10 +57,12 @@ class SingInProvider extends ChangeNotifier {
         email: email,
         password: password,
       );
+      return 'Success';
     } on FirebaseAuthException catch (e) {
       if (kDebugMode) {
         print('SinInProvider, createUserWithEmailAndPassword, Error: $e');
       }
+      return e.toString();
     }
   }
 

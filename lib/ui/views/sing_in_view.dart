@@ -115,6 +115,7 @@ class _SingInButton extends StatelessWidget {
       onTap: !singInProvider.isValid
           ? null
           : () async {
+              FocusManager.instance.primaryFocus?.unfocus();
               String resp = await singInProvider.singInWithEmailAndPassword(
                 email: singInProvider.email.value.trim(),
                 password: singInProvider.password.value.trim(),
