@@ -11,11 +11,11 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/recovery-password',
-      builder: (context, state) => const RecoveryPasswordView(),
+      builder: (context, state) => RecoveryPasswordView(),
     ),
     GoRoute(
       path: '/register',
-      builder: (context, state) => const RegisterView(),
+      builder: (context, state) => RegisterView(),
     ),
     GoRoute(
       path: '/',
