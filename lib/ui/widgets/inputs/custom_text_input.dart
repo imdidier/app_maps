@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
-enum orientationAnimated {
+enum OrientationAnimated {
   left,
   right,
 }
@@ -13,7 +13,7 @@ class CustomTextInput extends StatelessWidget {
   final bool obscureText;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
-  final Enum orientationAnimated;
+  final OrientationAnimated orientationAnimated;
 
   const CustomTextInput({
     Key? key,
@@ -23,7 +23,7 @@ class CustomTextInput extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.hintText,
-    required this.orientationAnimated,
+    this.orientationAnimated = OrientationAnimated.left,
   }) : super(key: key);
 
   @override
@@ -33,7 +33,7 @@ class CustomTextInput extends StatelessWidget {
       borderRadius: BorderRadius.circular(25),
     );
 
-    return orientationAnimated.name == 'left'
+    return orientationAnimated == OrientationAnimated.left
         ? FadeInLeftBig(
             duration: const Duration(milliseconds: 1500),
             child: _FromField(

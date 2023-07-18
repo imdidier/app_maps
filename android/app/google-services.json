@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "232269388011",
+    "project_id": "learning-d0b27",
+    "storage_bucket": "learning-d0b27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232269388011:android:7db823e99ac027ebdfc6ae",
+        "android_client_info": {
+          "package_name": "com.example.app_maps_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "232269388011-763mspu77ohldbr8pafq4hg7gf6id2b9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU1hugppW0GHMZ-bzKVS6Ap4gWvyIxfo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "232269388011-763mspu77ohldbr8pafq4hg7gf6id2b9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "232269388011-jkcur808n5n9vd6mjb3c4b0tvt86b0h0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.appMaps2"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232269388011:android:bef1a6bb6b707f82dfc6ae",
+        "android_client_info": {
+          "package_name": "com.imdidierjunco.app_notifications"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "232269388011-763mspu77ohldbr8pafq4hg7gf6id2b9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU1hugppW0GHMZ-bzKVS6Ap4gWvyIxfo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "232269388011-763mspu77ohldbr8pafq4hg7gf6id2b9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "232269388011-jkcur808n5n9vd6mjb3c4b0tvt86b0h0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.appMaps2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

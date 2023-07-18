@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -5,10 +7,12 @@ import 'package:go_router/go_router.dart';
 class CustomButton extends StatelessWidget {
   final String title;
   final String urlRuta;
+  final Map<String, dynamic>? data;
   const CustomButton({
     super.key,
     required this.title,
     required this.urlRuta,
+    this.data,
   });
 
   @override
@@ -16,7 +20,19 @@ class CustomButton extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: SizedBox(
+              height: 50,
+              child: Text('cfvgbhnj'),
+            ),
+            elevation: 2,
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.blueAccent,
+            // padding: EdgeInsets.all(),
+          ),
+        );
         context.go(urlRuta);
       },
       child: ElasticInRight(
