@@ -164,21 +164,21 @@ class _SingInButton extends StatelessWidget {
       ),
     );
   }
+}
 
-  void _showSnackBar({
-    required BuildContext context,
-    required String message,
-    required String type,
-  }) {
-    CustomSnackBar customSnackBar = type == 'error'
-        ? CustomSnackBar.error(message: message)
-        : CustomSnackBar.success(message: message);
-    return showTopSnackBar(
-      Overlay.of(context),
-      snackBarPosition: SnackBarPosition.bottom,
-      customSnackBar,
-    );
-  }
+void _showSnackBar({
+  required BuildContext context,
+  required String message,
+  required String type,
+}) {
+  CustomSnackBar customSnackBar = type == 'error'
+      ? CustomSnackBar.error(message: message)
+      : CustomSnackBar.success(message: message);
+  return showTopSnackBar(
+    Overlay.of(context),
+    snackBarPosition: SnackBarPosition.bottom,
+    customSnackBar,
+  );
 }
 
 class _ButtonTypeSingIn extends StatelessWidget {
@@ -190,7 +190,21 @@ class _ButtonTypeSingIn extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await signInProvider.signInWithGoogle();
+        final resp = await signInProvider.signInWithGoogle();
+        if (resp.user != null) {
+          _showSnackBar(
+            context: context,
+            message: 'Inicio de sesión con éxito.',
+            type: 'success',
+          );
+          context.go('/home');
+          return;
+        }
+        _showSnackBar(
+          context: context,
+          message: 'Oops ocurrio un error al iniciar sesión',
+          type: 'error',
+        );
       },
       child: SizedBox(
         width: 30,
