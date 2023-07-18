@@ -2,17 +2,19 @@ import 'package:app_maps_2/config/firebase/firebase_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../insfractructure/inputs/inputs.dart';
 
-class SingInProvider extends ChangeNotifier {
+class SignInProvider extends ChangeNotifier {
   FirebaseAuth firebaseAuth = FirebaseServices.firebaseAuth;
   User? get currentUser => firebaseAuth.currentUser;
   Email email;
   Password password;
   bool isValid;
+  GoogleSignIn googleSignIn = GoogleSignIn();
 
-  SingInProvider({
+  SignInProvider({
     this.email = const Email.pure(),
     this.password = const Password.pure(),
     this.isValid = false,
@@ -76,4 +78,29 @@ class SingInProvider extends ChangeNotifier {
       }
     }
   }
+
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
+
+    GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount!.authentication;
+
+    AuthCredential authCredential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    return await firebaseAuth.signInWithCredential(authCredential);
+
+    // final User user = userCredential.user!;
+    // return isCurrentSignIn(user);
+  }
+
+  // Future<UserCredential> isCurrentSignIn(UserCredential user) async {
+  //   assert(!user.isNull);
+  //   final UserCredential currentUser = firebaseAuth.!;
+  //   assert(user.uid == currentUser.uid);
+  //   return user;
+  // }
 }

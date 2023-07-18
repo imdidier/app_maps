@@ -8,6 +8,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 
 import '../providers/providers.dart';
+import '../providers/sign_in_provider.dart';
 import '../widgets/widgets.dart';
 
 class SingInView extends StatelessWidget {
@@ -33,10 +34,10 @@ class _Form extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SingInProvider singInProvider = context.watch<SingInProvider>();
+    SignInProvider signInProvider = context.watch<SignInProvider>();
 
-    final password = singInProvider.password;
-    final email = singInProvider.email;
+    final password = signInProvider.password;
+    final email = signInProvider.email;
     return Form(
       child: Column(
         children: [
@@ -49,7 +50,7 @@ class _Form extends StatelessWidget {
             obscureText: false,
             label: 'Correo',
             hintText: 'Ingrese email',
-            onChanged: singInProvider.emailChanged,
+            onChanged: signInProvider.emailChanged,
             errorMessage: email.errorMessage,
           ),
           const SizedBox(height: 10),
@@ -58,7 +59,7 @@ class _Form extends StatelessWidget {
             obscureText: true,
             label: 'Contraseña',
             hintText: 'Ingrese contraseña',
-            onChanged: singInProvider.passwordChanged,
+            onChanged: signInProvider.passwordChanged,
             errorMessage: password.errorMessage,
           ),
           FadeInLeftBig(
@@ -75,10 +76,10 @@ class _Form extends StatelessWidget {
           ),
           FadeInRightBig(
             duration: const Duration(milliseconds: 1500),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _ButtonTypeSingIn('assets/google.png'),
+                _ButtonTypeSingIn('assets/google.png', signInProvider),
                 // SizedBox(width: 20),
                 // _ButtonTypeSingIn('assets/facebook.png'),
               ],
@@ -97,7 +98,7 @@ class _Form extends StatelessWidget {
             ),
           ),
           const Expanded(child: SizedBox()),
-          _SingInButton(singInProvider: singInProvider),
+          _SingInButton(signInProvider: signInProvider),
         ],
       ),
     );
@@ -105,20 +106,20 @@ class _Form extends StatelessWidget {
 }
 
 class _SingInButton extends StatelessWidget {
-  final SingInProvider singInProvider;
-  const _SingInButton({required this.singInProvider});
+  final SignInProvider signInProvider;
+  const _SingInButton({required this.signInProvider});
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     return GestureDetector(
-      onTap: !singInProvider.isValid
+      onTap: !signInProvider.isValid
           ? null
           : () async {
               FocusManager.instance.primaryFocus?.unfocus();
-              String resp = await singInProvider.singInWithEmailAndPassword(
-                email: singInProvider.email.value.trim(),
-                password: singInProvider.password.value.trim(),
+              String resp = await signInProvider.singInWithEmailAndPassword(
+                email: signInProvider.email.value.trim(),
+                password: signInProvider.password.value.trim(),
               );
               if (resp.contains('[firebase_auth/wrong-password]')) {
                 _showSnackBar(
@@ -150,7 +151,7 @@ class _SingInButton extends StatelessWidget {
           height: 45,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: !singInProvider.isValid ? Colors.grey : colors.primary,
+            color: !signInProvider.isValid ? Colors.grey : colors.primary,
             borderRadius: BorderRadius.circular(20),
           ),
           child: const Center(
@@ -182,13 +183,19 @@ class _SingInButton extends StatelessWidget {
 
 class _ButtonTypeSingIn extends StatelessWidget {
   final String imgaeUrl;
-  const _ButtonTypeSingIn(this.imgaeUrl);
+  final SignInProvider signInProvider;
+  const _ButtonTypeSingIn(this.imgaeUrl, this.signInProvider);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 30,
-      child: Image.asset(imgaeUrl),
+    return GestureDetector(
+      onTap: () async {
+        await signInProvider.signInWithGoogle();
+      },
+      child: SizedBox(
+        width: 30,
+        child: Image.asset(imgaeUrl),
+      ),
     );
   }
 }

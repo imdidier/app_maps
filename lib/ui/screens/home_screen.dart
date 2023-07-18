@@ -157,10 +157,10 @@ class _ExitButton extends StatelessWidget {
   const _ExitButton();
   @override
   Widget build(BuildContext context) {
-    SingInProvider singInProvider = context.watch<SingInProvider>();
+    SignInProvider signInProvider = context.watch<SignInProvider>();
     return TextButton(
       onPressed: () async {
-        await singInProvider.singOut();
+        await signInProvider.singOut();
         context.go('/');
       },
       child: const Row(

@@ -93,7 +93,7 @@ class _RegisterButton extends StatelessWidget {
     UserProvider userProvider = context.watch<UserProvider>();
     RegisterProvider registerProvider = context.watch<RegisterProvider>();
 
-    SingInProvider singInProvider = context.watch<SingInProvider>();
+    SignInProvider signInProvider = context.watch<SignInProvider>();
 
     return GestureDetector(
       onTap: !registerProvider.isValid
@@ -102,7 +102,7 @@ class _RegisterButton extends StatelessWidget {
               FocusManager.instance.primaryFocus?.unfocus();
 
               String resp2 =
-                  await singInProvider.createUserWithEmailAndPassword(
+                  await signInProvider.createUserWithEmailAndPassword(
                 email: registerProvider.email.value.trim(),
                 password: registerProvider.password.value.trim(),
               );
