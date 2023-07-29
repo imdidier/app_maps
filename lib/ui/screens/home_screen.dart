@@ -204,29 +204,16 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         : widget.isSearchDirection
             ? widget.mapProvider.placePosition!
             : widget.mapProvider.myPosition!;
+    MapController mapController = widget.mapProvider.mapController;
 
     return FlutterMap(
-      // mapController: mapControllerAnimation.mapController,
+      mapController: mapController,
       options: MapOptions(
         center: myPosition,
         minZoom: 5,
         maxZoom: 25,
-        zoom: 18,
+        zoom: 15,
         rotationWinGestures: MultiFingerGesture.none,
-        // onMapReady: () {
-        //   mapControllerAnimation.mapController.mapEventStream.listen(
-        //     (evt) {
-        //       myPosition = evt.center;
-        //       setState(() {});
-        //     },
-        //   );
-        //   // And any other `MapController` dependent non-movement methods
-        // },
-        // onPositionChanged: (newPosition, value) {
-        //   if (newPosition.center != myPosition) {
-        //     myPosition = newPosition.center!;
-        //   }
-        // },
       ),
       nonRotatedChildren: [
         TileLayer(
