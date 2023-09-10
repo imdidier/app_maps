@@ -6,7 +6,7 @@ enum EmailError { empty, format }
 // Extend FormzInput and provide the input type and error type.
 class Email extends FormzInput<String, EmailError> {
   static final emailRegExp = RegExp(
-    r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$",
+    r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
   );
   // Call super.pure to represent an unmodified form input.
   const Email.pure() : super.pure('');
@@ -15,7 +15,7 @@ class Email extends FormzInput<String, EmailError> {
   const Email.dirty(String value) : super.dirty(value);
 
   String? get errorMessage {
-    if (isValid || isPure) return null;
+    if (!isValid || isPure) return null;
     if (displayError == EmailError.empty) return 'El campo es requerido';
     if (displayError == EmailError.format) {
       return 'No tiene un formato de correo';

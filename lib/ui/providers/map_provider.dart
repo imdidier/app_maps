@@ -1,33 +1,23 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_map/flutter_map.dart';
+import 'dart:async';
+
+import 'package:app_maps_2/config/constants/envrioment.dart';
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapProvider extends ChangeNotifier {
+  GoogleMapController? mapController;
   LatLng? myPosition;
   LatLng? placePosition;
   bool isSearchDirection = false;
-  final MapController mapController = MapController();
-  Future<void> trasladarAMiDireccion() async {
-    // final String accessToken =
-    //     "TU_TOKEN_DE_ACCESO"; // Reemplaza con tu token de acceso de Mapbox
-    // final String apiUrl =
-    //     "https://api.mapbox.com/geocoding/v5/mapbox.places/$direccion.json?access_token=$accessToken";
-
-    try {
-      // final response = await http.get(Uri.parse(apiUrl));
-
-      // if (response.statusCode == 200) {
-      // final data = json.decode(response.body);
-      // final double latitud = data['features'][0]['center'][1];
-      // final double longitud = data['features'][0]['center'][0];
-
-      mapController.move(const LatLng(10.2299682, -75.4304379), 15.0);
-      // } else {
-      //   print("Error en la consulta: ${response.statusCode}");
-      // }
-    } catch (e) {
-      print("Error: $e");
+  List<Map<String, dynamic>> addressList = [];
+  Future<void> trasladarAMiDireccion(String query) async {
+    try {} catch (e) {
+      if (kDebugMode) {
+        print("Error: $e");
+      }
     }
   }
 
@@ -46,15 +36,43 @@ class MapProvider extends ChangeNotifier {
   Future<void> getCurrentPosition() async {
     Position position = await determinePosition();
     myPosition = LatLng(position.latitude, position.longitude);
-    mapController.move(LatLng(position.latitude, position.longitude), 15.0);
-    isSearchDirection = false;
+    mapController!.animateCamera(CameraUpdate.newLatLng(myPosition!));
     notifyListeners();
   }
 
-  Future<void> goNewPosition(String query) async {
-    placePosition = const LatLng(10.2299682, -75.4304379);
-    await trasladarAMiDireccion();
-    isSearchDirection = true;
+  Future<void> goNewPosition(Map<String, dynamic> address) async {
+    final lat = address['lat'];
+    final lng = address['lng'];
+    myPosition = null;
+    placePosition = LatLng(lat, lng);
+    mapController!.animateCamera(CameraUpdate.newLatLng(placePosition!));
     notifyListeners();
+  }
+
+  Future<void> searchAddress(String address) async {
+    try {
+      if (address != '') {
+        addressList.clear();
+        final apiKey = Environment.apiKeyGoogleMaps;
+        final url = Uri.parse(
+            'https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=$apiKey');
+
+        final response = await http.get(url);
+
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          final result = data['results'] as List<dynamic>;
+          if (result.isNotEmpty) {
+            if (result.length > 5) result.sublist(1, 4);
+            addressList = [...result];
+          }
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('MapProvider, searchAddress Error: $e');
+      }
+    }
   }
 }

@@ -17,7 +17,7 @@ class SignInProvider extends ChangeNotifier {
   SignInProvider({
     this.email = const Email.pure(),
     this.password = const Password.pure(),
-    this.isValid = false,
+    this.isValid = true,
   });
 
   void emailChanged(String value) {
